@@ -19,8 +19,6 @@ class GameDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
         val view = inflater.inflate(R.layout.game_detail, container, false)
 
         val tvName = view.findViewById<TextView>(R.id.tvName)
@@ -31,19 +29,6 @@ class GameDetailFragment : Fragment() {
         val description = arguments?.getString("description") ?: "No description available"
 
         tvDescription.text = description
-
-        // ambil data dari arguments
-//        val gameId = arguments?.getInt("id") ?: 0
-//
-//        viewModel.loadGameDetail(gameId) { game ->
-//            if (game != null) {
-//                tvName.text = game.name
-//                tvReleased.text = game.released ?: "Unknown"
-//                tvDescription.text = game.description ?: "No description available"
-//                Picasso.get().load(game.backgroundImage).into(ivGame)
-//            }
-//        }
-
         val gameId = arguments?.getInt("id") ?: 0
         viewModel.loadGameDetail(gameId) { game ->
             if (game != null) {
@@ -56,4 +41,13 @@ class GameDetailFragment : Fragment() {
 
         return view
     }
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.apply {
+            hideBottomNav()
+            showBackButton()
+            updateTitle("Game Detail")
+        }
+    }
+
 }

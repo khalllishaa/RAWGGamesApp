@@ -21,7 +21,6 @@ class GameListFragment : Fragment() {
     private val viewModel: GameViewModel by activityViewModels()
     private var allGames: List<Game> = listOf()
     private lateinit var emptyTextView: TextView
-    private var favorites: List<Game> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

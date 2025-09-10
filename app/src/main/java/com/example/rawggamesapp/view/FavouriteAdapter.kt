@@ -3,6 +3,7 @@ package com.example.rawggamesapp.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rawggamesapp.R
 import com.example.rawggamesapp.databinding.ItemGameBinding
 import com.example.rawggamesapp.model.FavoriteGame
 import com.squareup.picasso.Picasso
@@ -17,6 +18,7 @@ class FavoriteAdapter(
             binding.tvName.text = fav.name
             binding.tvReleased.text = fav.released ?: "Unknown"
             Picasso.get().load(fav.backgroundImage).into(binding.ivGame)
+            binding.ivLike.setImageResource(R.drawable.baseline_favorite_24)
 
             binding.ivLike.setOnClickListener {
                 onDeleteClick(fav)

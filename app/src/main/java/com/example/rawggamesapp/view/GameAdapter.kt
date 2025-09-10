@@ -18,16 +18,13 @@ class GameAdapter(
     inner class GameViewHolder(val binding: ItemGameBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(game: Game) {
             binding.tvName.text = game.name
-//            binding.tvReleased.text = game.released ?: "Unknown"
             binding.tvReleased.text = game.released ?: "Unknown"
             binding.tvRating.text = "Rating: ${game.rating} (${game.ratingsCount} votes)"
             Picasso.get().load(game.backgroundImage).into(binding.ivGame)
 
-            // klik item -> detail
             binding.root.setOnClickListener {
                 onClick(game)
             }
-
             binding.ivLike.setOnClickListener {
                 onLikeClick(game)
                 binding.ivLike.setImageResource(R.drawable.baseline_favorite_24)
