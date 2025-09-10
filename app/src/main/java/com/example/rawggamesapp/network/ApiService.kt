@@ -1,7 +1,9 @@
 package com.example.rawggamesapp.network
 
+import com.example.rawggamesapp.model.Game
 import com.example.rawggamesapp.model.GameResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -13,4 +15,11 @@ interface ApiService {
         @Query("ordering") ordering: String = "released",
         @Query("exclude_additions") excludeAdditions: Boolean = true
     ): GameResponse
+
+    // Tambahin ini untuk detail game
+    @GET("games/{id}")
+    suspend fun getGameDetail(
+        @Path("id") id: Int,
+        @Query("key") apiKey: String
+    ): Game
 }

@@ -12,6 +12,7 @@ class GameAdapter(
     private var games: List<Game>,
     private val onClick: (Game) -> Unit,
     private val onLikeClick: (Game) -> Unit
+
 ) : RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
 
     inner class GameViewHolder(val binding: ItemGameBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -27,10 +28,8 @@ class GameAdapter(
 
             binding.ivLike.setOnClickListener {
                 onLikeClick(game)
-                // opsional: ubah icon jadi filled / liked
-                binding.ivLike.setImageResource(R.drawable.favourite)
+                binding.ivLike.setImageResource(R.drawable.baseline_favorite_24)
             }
-
         }
     }
 

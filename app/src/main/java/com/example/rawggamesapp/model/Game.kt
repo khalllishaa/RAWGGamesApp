@@ -5,6 +5,6 @@ data class Game(
     val id: Int,
     val name: String,
     val released: String?,
+    val description: String?,
     @SerializedName("background_image") val backgroundImage: String?
 )
-

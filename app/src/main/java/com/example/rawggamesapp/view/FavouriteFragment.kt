@@ -15,7 +15,6 @@ import com.example.rawggamesapp.model.Game
 import com.example.rawggamesapp.R
 
 class FavoriteFragment : Fragment() {
-
     private val viewModel: GameViewModel by activityViewModels()
     private lateinit var adapter: FavoriteAdapter
 
@@ -24,13 +23,12 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_favourite, container, false)
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         val emptyTextView = view.findViewById<TextView>(R.id.emptyTextView)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         adapter = FavoriteAdapter(listOf()) { favoriteGame ->
-            // hapus dari favorite
             viewModel.removeFromFavorites(favoriteGame)
             Toast.makeText(
                 requireContext(),
@@ -38,7 +36,6 @@ class FavoriteFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
         recyclerView.adapter = adapter
 
         viewModel.favorites.observe(viewLifecycleOwner) { favs ->
@@ -53,5 +50,10 @@ class FavoriteFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.updateTitle("Your Favorite Games")
     }
 }

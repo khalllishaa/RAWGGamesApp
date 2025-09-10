@@ -44,4 +44,15 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             repo.deleteFavorite(favorite)
         }
     }
+
+    fun loadGameDetail(id: Int, onResult: (Game?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val game = RetrofitClient.apiService.getGameDetail(id, "40c26eb90f2b42b49874b203ec03ddd8")
+                onResult(game)
+            } catch (e: Exception) {
+                onResult(null)
+            }
+        }
+    }
 }
