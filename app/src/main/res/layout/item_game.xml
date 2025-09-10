@@ -37,5 +37,14 @@
             android:text="2025-01-01"
             android:textSize="14sp"
             android:textColor="#666"/>
+        <ImageView
+            android:id="@+id/ivLike"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/favourite"
+        android:contentDescription="Like button" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

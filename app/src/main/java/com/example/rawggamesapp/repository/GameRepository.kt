@@ -5,7 +5,7 @@ import com.example.rawggamesapp.network.RetrofitClient
 
 class GameRepository {
     suspend fun getGames(apiKey: String, page: Int, pageSize: Int) =
-        RetrofitClient.api.getGames(
+        RetrofitClient.apiService.getGames(
             apiKey = apiKey,
             page = page,
             pageSize = pageSize,
