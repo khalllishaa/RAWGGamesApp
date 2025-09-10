@@ -25,12 +25,12 @@ class GameAdapter(
                 onClick(game)
             }
 
-            // klik like
             binding.ivLike.setOnClickListener {
                 onLikeClick(game)
                 // opsional: ubah icon jadi filled / liked
                 binding.ivLike.setImageResource(R.drawable.favourite)
             }
+
         }
     }
 

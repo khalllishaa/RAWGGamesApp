@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rawggamesapp.viewModel.GameViewModel
@@ -44,19 +45,8 @@ class GameListFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }, { likedGame ->
-            // klik like -> masuk favorite
-            (activity as? MainActivity)?.apply {
-                updateTitle("Your Favorite Games")
-                hideBottomNav()
-            }
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, FavoriteFragment())
-                .addToBackStack(null)
-                .commit()
-
-            // opsional: simpan game ke list favorite di ViewModel / database
             viewModel.addToFavorites(likedGame)
+            Toast.makeText(requireContext(), "${likedGame.name} ditambahkan ke favorit!", Toast.LENGTH_SHORT).show()
         })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -1,29 +1,20 @@
 package com.example.rawggamesapp.viewModel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.rawggamesapp.model.Game
-import com.example.rawggamesapp.network.ApiService
+import com.example.rawggamesapp.model.FavoriteGame
+import com.example.rawggamesapp.repository.FavoriteRepository
 import com.example.rawggamesapp.network.RetrofitClient
-import com.example.rawggamesapp.repository.GameRepository
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
+class GameViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repo = FavoriteRepository(application.applicationContext)
     private val _games = MutableLiveData<List<Game>>()
     val games: LiveData<List<Game>> = _games
 
-    private val _favorites = MutableLiveData<MutableList<Game>>(mutableListOf())
-    val favorites: LiveData<List<Game>> = _favorites as LiveData<List<Game>>
-
-    fun addToFavorites(game: Game) {
-        if (!_favorites.value!!.contains(game)) {
-            _favorites.value!!.add(game)
-            _favorites.value = _favorites.value // trigger observer
-        }
-    }
+    val favorites: LiveData<List<FavoriteGame>> = repo.getFavorites()
 
     fun loadGames(apiKey: String) {
         viewModelScope.launch {
@@ -35,31 +26,22 @@ class GameViewModel : ViewModel() {
             }
         }
     }
+
+    fun addToFavorites(game: Game) {
+        val fav = FavoriteGame(
+            id = game.id,
+            name = game.name,
+            released = game.released,
+            backgroundImage = game.backgroundImage
+        )
+        viewModelScope.launch {
+            repo.insertFavorite(fav) // simpan ke database
+        }
+    }
+
+    fun removeFromFavorites(favorite: FavoriteGame) {
+        viewModelScope.launch {
+            repo.deleteFavorite(favorite)
+        }
+    }
 }
-
-//class GameViewModel : ViewModel() {
-//    private val repo = GameRepository()
-//    val games = MutableLiveData<List<Game>>()
-//
-//    fun loadGames(apiKey: String, page: Int = 1, pageSize: Int = 20) {
-//        viewModelScope.launch {
-//            try {
-//                val response = repo.getGames(apiKey, page, pageSize)
-//                games.postValue(response.results)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
-//fun loadGames(apiKey: String, page: Int = 1, pageSize: Int = 20) {
-//    viewModelScope.launch {
-//        try {
-//            val response = repo.getGames(apiKey, page, pageSize)
-//            val filtered = response.results.filter { !it.released.isNullOrEmpty() }
-//            games.postValue(filtered)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-//}
-
