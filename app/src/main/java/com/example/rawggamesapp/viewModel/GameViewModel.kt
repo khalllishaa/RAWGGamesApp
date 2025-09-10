@@ -1,20 +1,58 @@
 package com.example.rawggamesapp.viewModel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.rawggamesapp.model.Game
-import com.example.rawggamesapp.repository.GameRepository
+import com.example.rawggamesapp.model.FavoriteGame
+import com.example.rawggamesapp.repository.FavoriteRepository
+import com.example.rawggamesapp.network.RetrofitClient
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
-    private val repo = GameRepository()
-    val games = MutableLiveData<List<Game>>()
+class GameViewModel(application: Application) : AndroidViewModel(application) {
 
-    fun loadGames(apiKey: String, page: Int, pageSize: Int) {
+    private val repo = FavoriteRepository(application.applicationContext)
+    private val _games = MutableLiveData<List<Game>>()
+    val games: LiveData<List<Game>> = _games
+
+    val favorites: LiveData<List<FavoriteGame>> = repo.getFavorites()
+
+    fun loadGames(apiKey: String) {
         viewModelScope.launch {
-            val response = repo.getGames(apiKey, page, pageSize)
-            games.postValue(response.results)
+            try {
+                val response = RetrofitClient.apiService.getGames(apiKey)
+                _games.value = response.results
+            } catch (e: Exception) {
+                _games.value = emptyList()
+            }
+        }
+    }
+
+    fun addToFavorites(game: Game) {
+        val fav = FavoriteGame(
+            id = game.id,
+            name = game.name,
+            released = game.released,
+            backgroundImage = game.backgroundImage
+        )
+        viewModelScope.launch {
+            repo.insertFavorite(fav) // simpan ke database
+        }
+    }
+
+    fun removeFromFavorites(favorite: FavoriteGame) {
+        viewModelScope.launch {
+            repo.deleteFavorite(favorite)
+        }
+    }
+
+    fun loadGameDetail(id: Int, onResult: (Game?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val game = RetrofitClient.apiService.getGameDetail(id, "40c26eb90f2b42b49874b203ec03ddd8")
+                onResult(game)
+            } catch (e: Exception) {
+                onResult(null)
+            }
         }
     }
 }
