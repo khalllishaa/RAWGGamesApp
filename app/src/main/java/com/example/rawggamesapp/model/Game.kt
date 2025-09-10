@@ -1,17 +1,6 @@
 package com.example.rawggamesapp.model
 import com.google.gson.annotations.SerializedName
 
-//data class Game(
-//    val id: Int,
-//    val name: String,
-//    val released: String?,
-//    val rating: Double,
-//    val rating_top: Int,
-//    val ratings_count: Int,
-//    val description: String? = null,
-//    @SerializedName("background_image") val backgroundImage: String?
-//)
-
 data class Game(
     val id: Int,
     val name: String,

@@ -49,12 +49,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
+        onBackPressed()
         return true
     }
 
-    fun updateTitle(title: String) {
-        supportActionBar?.title = title
+
+    fun showBackButton() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    fun hideBackButton() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     fun hideBottomNav() {
@@ -65,52 +70,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.VISIBLE
     }
 
-    fun showBackButton() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    fun updateTitle(title: String) {
+        supportActionBar?.title = title
     }
-
-    fun hideBackButton() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    }
-
 }
-
-//class MainActivity : AppCompatActivity() {
-//    private lateinit var binding: ActivityMainBinding
-//    private lateinit var adapter: GameAdapter
-//    private val viewModel: GameViewModel by viewModels()
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        // Setup RecyclerView
-//        adapter = GameAdapter(listOf())
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-//        binding.recyclerView.adapter = adapter
-//
-//        // Observe LiveData dari ViewModel
-//        viewModel.games.observe(this) { games ->
-//            Log.d("MAIN", "Update UI dengan ${games.size} data")
-//            adapter.setGames(games)
-//        }
-//
-//        // Panggil API lewat ViewModel
-//        viewModel.loadGames("40c26eb90f2b42b49874b203ec03ddd8")
-//
-//        binding.bottomNav.setOnItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.nav_game -> {
-//                    binding.tvTitle.text = "List Game For You"
-//                    true
-//                }
-//                R.id.nav_fav -> {
-//                    binding.tvTitle.text = "Your Favorite Games"
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//    }
-//}
