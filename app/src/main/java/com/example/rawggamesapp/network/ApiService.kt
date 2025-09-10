@@ -2,19 +2,26 @@ package com.example.rawggamesapp.network
 
 import com.example.rawggamesapp.model.Game
 import com.example.rawggamesapp.model.GameResponse
+import com.example.rawggamesapp.model.GamesListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+//    @GET("games")
+//    suspend fun getGames(
+//        @Query("key") apiKey: String,
+//        @Query("page") page: Int = 1,
+//        @Query("page_size") pageSize: Int = 20,
+//        @Query("ordering") ordering: String = "released",
+//        @Query("exclude_additions") excludeAdditions: Boolean = true
+//    ): GameResponse
     @GET("games")
     suspend fun getGames(
-        @Query("key") apiKey: String,
-        @Query("page") page: Int = 1,
-        @Query("page_size") pageSize: Int = 20,
-        @Query("ordering") ordering: String = "released",
-        @Query("exclude_additions") excludeAdditions: Boolean = true
-    ): GameResponse
+        @Query("key") key: String = Constants.API_KEY,
+        @Query("page") page: Int? = null,
+        @Query("page_size") pageSize: Int? = null
+    ): GamesListResponse
 
     // Tambahin ini untuk detail game
     @GET("games/{id}")

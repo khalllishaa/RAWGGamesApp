@@ -15,12 +15,24 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val games: LiveData<List<Game>> = _games
 
     val favorites: LiveData<List<FavoriteGame>> = repo.getFavorites()
-
     fun loadGames(apiKey: String) {
         viewModelScope.launch {
             try {
                 val response = RetrofitClient.apiService.getGames(apiKey)
-                _games.value = response.results
+                // konversi GameResponse -> Game
+                _games.value = response.results.map { gameResponse ->
+                    Game(
+                        id = gameResponse.id,
+                        name = gameResponse.name,
+                        released = gameResponse.released,
+                        backgroundImage = gameResponse.backgroundImage,
+                        description = gameResponse.description,
+                        rating = gameResponse.rating,
+                        ratingTop = gameResponse.ratingTop,
+                        ratingsCount = gameResponse.ratingsCount
+                    )
+                }
+
             } catch (e: Exception) {
                 _games.value = emptyList()
             }
